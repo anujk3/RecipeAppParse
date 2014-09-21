@@ -47,13 +47,15 @@
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
         // Whether the built-in pagination is enabled
-        self.paginationEnabled = NO;
+        self.paginationEnabled = YES;
+        self.objectsPerPage = 10;
     }
     return self;
 }
 - (PFQuery *)queryForTable
 {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
+    query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     return query;
 }
 
