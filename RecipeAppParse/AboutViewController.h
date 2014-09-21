@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  AboutViewController.h
 //  RecipeAppParse
 //
 //  Created by Anuj Katiyal on 21/09/14.
@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface AboutViewController : UIViewController
 
+@property (nonatomic, strong) IBOutlet UIWebView *webView;
 
 @end
-
