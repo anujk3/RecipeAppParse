@@ -17,11 +17,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = self.recipe.name;
-    self.prepTimeLabel.text = self.recipe.prepTime;
-    self.recipeImageView.image = [UIImage imageNamed:self.recipe.image];
+    self.title = self.name;
+    self.prepTimeLabel.text = self.prepTime;
+    
+    PFImageView *recipeImageView = (PFImageView *)self.recipeImageView;
+    
+    recipeImageView.image = [UIImage imageNamed:@"placeholder.jpg"];
+    recipeImageView.file = self.image;
+    [recipeImageView loadInBackground];
+    
     NSMutableString *ingredientsText = [NSMutableString string];
-    for (NSString* ingredient in self.recipe.ingredients) {
+    for (NSString* ingredient in self.ingredients) {
         [ingredientsText appendFormat:@"%@\n", ingredient];
     }
     self.ingredientsTextView.text = ingredientsText;

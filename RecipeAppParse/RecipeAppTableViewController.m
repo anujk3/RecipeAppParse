@@ -59,30 +59,31 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 1;
-}
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+//    // Return the number of sections.
+//    return 1;
+//}
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return [recipes count];
-}
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+//    // Return the number of rows in the section.
+//    return [recipes count];
+//}
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
     
     static NSString *CellIdentifier = @"RecipeAppTableCell";
     RecipeAppTableViewCell *cell = (RecipeAppTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    if (cell == nil) {
-        cell = [[RecipeAppTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
+    PFFile *thumbnail = [object objectForKey:@"image"];
+    PFImageView *thumbnailImageView = (PFImageView *)cell.thumbnailImageView;
     
-    Recipe *recipe = [recipes objectAtIndex:indexPath.row];
-    cell.nameLabel.text = recipe.name;
-    cell.thumbnailImageView.image = [UIImage imageNamed:recipe.image];
-    cell.prepTimeLabel.text = recipe.prepTime;
+    thumbnailImageView.image = [UIImage imageNamed:@"placeholder.jpg"];
+    thumbnailImageView.file = thumbnail;
+    [thumbnailImageView loadInBackground];
+    
+    cell.nameLabel.text = [object objectForKey:@"name"];
+    cell.prepTimeLabel.text = [object objectForKey:@"prepTime"];
     
     return cell;
 }
@@ -130,8 +131,12 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         RecipeDetailViewController *destViewController = segue.destinationViewController;
         
-        Recipe *recipe = [recipes objectAtIndex:indexPath.row];
-        destViewController.recipe = recipe;
+        PFObject *object = [self.objects objectAtIndex:indexPath.row];
+        
+        destViewController.name = [object objectForKey:@"name"];
+        destViewController.image= [object objectForKey:@"image"];
+        destViewController.prepTime = [object objectForKey:@"prepTime"];
+        destViewController.ingredients = [object objectForKey:@"ingredients"];
     }
 }
 
